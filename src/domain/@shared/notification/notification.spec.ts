@@ -1,6 +1,6 @@
 import Notification from "./notification";
 
-describe("Unit testss for notifications", () => {
+describe("Unit tests for notifications", () => {
   it("should create errors", () => {
     const notification = new Notification();
     const error = {
@@ -56,5 +56,35 @@ describe("Unit testss for notifications", () => {
     notification.addError(error);
 
     expect(notification.getErrors()).toEqual([error]);
+  });
+
+  
+  it("should throw a NotificationError", () => {
+    const notification = new Notification();
+
+    expect(()=>{
+      notification.notificate();
+    }).not.toThrow();
+    
+    const error1 = {
+      message: "error message",
+      context: "customer",
+    };
+    notification.addError(error1);
+
+    const error2 = {
+      message: "error message",
+      context: "product",
+    };
+    notification.addError(error2);    
+
+    expect(()=>{
+      notification.notificate();
+    }).toThrowError("customer: error message,product: error message");
+
+    expect(()=>{
+      notification.notificate("product");
+    }).toThrowError("product: error message");
+
   });
 });

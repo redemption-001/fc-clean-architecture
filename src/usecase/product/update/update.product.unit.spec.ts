@@ -1,9 +1,9 @@
 import Product from "../../../domain/product/entity/product"
 import UpdateProductUseCase from "./update.product.usecase"
 
-describe("Update product use case unit tests", ()=>{
-    const product = new Product("123", "Product 1", 10.5)
+describe("Update product use case unit tests", ()=>{    
     const MockRepository = () =>{
+        const product = new Product("123", "Product 1", 10.5)
         return {
             find: jest.fn().mockReturnValue(product),
             findAll: jest.fn(),
@@ -14,6 +14,7 @@ describe("Update product use case unit tests", ()=>{
 
     it("Should update product's name", async()=>{
         const productRepository = MockRepository();
+        const product = productRepository.find();
         const productUpdateUseCase = new UpdateProductUseCase(productRepository);
         const input = {
             id: product.id,
@@ -26,6 +27,7 @@ describe("Update product use case unit tests", ()=>{
 
     it("Should update product's price", async()=>{
         const productRepository = MockRepository();
+        const product = productRepository.find();
         const productUpdateUseCase = new UpdateProductUseCase(productRepository);
         const input = {
             id: product.id,
@@ -38,6 +40,7 @@ describe("Update product use case unit tests", ()=>{
 
     it("Should throw an error when product's name is missing", async()=>{
         const productRepository = MockRepository();
+        const product = productRepository.find();
         const productUpdateUseCase = new UpdateProductUseCase(productRepository);
         const input = {
             id: product.id,
@@ -46,11 +49,12 @@ describe("Update product use case unit tests", ()=>{
         }
         expect(async ()=>{
             return await productUpdateUseCase.execute(input);
-        }).rejects.toThrow("Name is required")
+        }).rejects.toThrow("product: Name is required")
     })
 
     it("Should throw an error when product's price is less than zero", async()=>{
         const productRepository = MockRepository();
+        const product = productRepository.find();
         const productUpdateUseCase = new UpdateProductUseCase(productRepository);
         const input = {
             id: product.id,
@@ -60,6 +64,6 @@ describe("Update product use case unit tests", ()=>{
 
         expect(async ()=>{
             return await productUpdateUseCase.execute(input);
-        }).rejects.toThrow("Price must be greater than zero")
+        }).rejects.toThrow("product: Price must be greater than zero")
     })
 })
