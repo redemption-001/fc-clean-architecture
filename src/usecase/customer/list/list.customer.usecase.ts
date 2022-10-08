@@ -11,16 +11,16 @@ export default class ListCustomerUseCase {
     this.customerRepository = CustomerRepository;
   }
 
-  async execute(input: InputListCustomerDto): Promise<OutputListCustomerDto> {
+  async execute(_input: InputListCustomerDto): Promise<OutputListCustomerDto> {
     const customers = await this.customerRepository.findAll();
     return OutputMapper.toOutput(customers);
   }
 }
 
 class OutputMapper {
-  static toOutput(customer: Customer[]): OutputListCustomerDto {
+  static toOutput(customers: Customer[]): OutputListCustomerDto {
     return {
-      customers: customer.map((customer) => ({
+      customers: customers.map((customer) => ({
         id: customer.id,
         name: customer.name,
         address: {
